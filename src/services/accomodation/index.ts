@@ -92,7 +92,7 @@ accommodationRouter.delete(
     try {
       const deletedAccommodation = await AccommodationModel.findOneAndDelete({
         _id: req.params.accommodationId,
-        host: req.user._id,
+        host: req.user?._id,
       });
       if (deletedAccommodation) {
         res.status(204).send();

@@ -40,9 +40,10 @@ usersRouter.get("/", (req, res, next) => __awaiter(void 0, void 0, void 0, funct
 }));
 // 🚉 2 - "Profile endpoint for authenticated users"
 usersRouter.get("/me", JWTAuthMiddleware, (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     console.log("📨 PING - GET REQUEST");
     try {
-        const user = yield UsersModel.findById(req.user._id).populate({
+        const user = yield UsersModel.findById((_a = req.user) === null || _a === void 0 ? void 0 : _a._id).populate({
             path: "accommodations",
         });
         res.send(user);

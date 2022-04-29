@@ -1,6 +1,7 @@
 import createError from "http-errors";
 export const hostAuthorization = (req, res, next) => {
-    if (req.user.role === "host") {
+    var _a;
+    if (((_a = req.user) === null || _a === void 0 ? void 0 : _a.role) === "host") {
         next();
     }
     else {

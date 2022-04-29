@@ -39,7 +39,7 @@ usersRouter.get("/", async (req, res, next) => {
 usersRouter.get("/me", JWTAuthMiddleware, async (req, res, next) => {
   console.log("📨 PING - GET REQUEST");
   try {
-    const user = await UsersModel.findById(req.user._id).populate({
+    const user = await UsersModel.findById(req.user?._id).populate({
       path: "accommodations",
     });
     res.send(user);

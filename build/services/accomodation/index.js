@@ -67,11 +67,12 @@ accommodationRouter.put("/:accommodationId", JWTAuthMiddleware, hostAuthorizatio
     }
 }));
 accommodationRouter.delete("/:accommodationId", JWTAuthMiddleware, hostAuthorization, (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     console.log("📨 PING - DELETE REQUEST");
     try {
         const deletedAccommodation = yield AccommodationModel.findOneAndDelete({
             _id: req.params.accommodationId,
-            host: req.user._id,
+            host: (_a = req.user) === null || _a === void 0 ? void 0 : _a._id,
         });
         if (deletedAccommodation) {
             res.status(204).send();

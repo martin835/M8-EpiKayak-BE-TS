@@ -22,13 +22,13 @@ server.use("/accommodation", accommodationRouter);
 
 //***********************************Error handlers****************************************************/
 
-// mongoose.connect(process.env.MONGO_CONNECTION);
+mongoose.connect(process.env.MONGO_CONNECTION);
 
-// mongoose.connection.on("connected", () => {
-//   console.log("👌 Connected to Mongo!");
+mongoose.connection.on("connected", () => {
+  console.log("👌 Connected to Mongo!");
 
-server.listen(port, () => {
-  console.table(listEndpoints(server));
-  console.log(`🚀 Server listening on port ${port}`);
+  server.listen(port, () => {
+    console.table(listEndpoints(server));
+    console.log(`🚀 Server listening on port ${port}`);
+  });
 });
-// });

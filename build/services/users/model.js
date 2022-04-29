@@ -7,9 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
 import bcrypt from "bcrypt";
-const { Schema, model } = mongoose;
 const UserSchema = new Schema({
     name: { type: String },
     surname: { type: String },
@@ -18,7 +17,7 @@ const UserSchema = new Schema({
     role: { type: String, enum: ["host", "guest"], default: "guest" },
     googleId: { type: String },
     accommodations: [{ type: Schema.Types.ObjectId, ref: "Accommodation" }],
-}, { timestamps: true });
+});
 UserSchema.pre("save", function (next) {
     return __awaiter(this, void 0, void 0, function* () {
         // BEFORE saving the user in db, hash the password

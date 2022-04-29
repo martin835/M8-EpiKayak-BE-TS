@@ -1,4 +1,4 @@
-declare module "*";
+//declare module "*";
 
 interface JwtUser {
   _id: string;

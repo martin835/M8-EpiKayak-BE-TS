@@ -19,12 +19,12 @@ export const JWTAuthMiddleware = (req, res, next) => __awaiter(void 0, void 0, v
             // 2. Extract the token from Authorization header
             const token = req.headers.authorization.replace("Bearer ", "");
             // 3. Verify the token (check if it is not expired and check signature integrity), if everything is fine we should get back the payload ({_id, role})
-            const payload = yield verifyAccessToken(token);
+            req.user = (yield verifyAccessToken(token));
             // 4. If token is valid --> next()
-            req.user = {
-                _id: payload._id,
-                role: payload.role,
-            };
+            //   req.user = {
+            //    _id: payload._id,
+            //     role: payload.role,
+            //   };
             next();
         }
         catch (error) {

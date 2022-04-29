@@ -1,22 +1,27 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
 import bcrypt from "bcrypt";
 
-const { Schema, model } = mongoose;
+interface IUser {
+  name?: string;
+  surname?: string;
+  email: string;
+  password?: string;
+  role: string;
+  googleId?: string;
+  accommodations: string[];
+}
 
-const UserSchema = new Schema(
-  {
-    name: { type: String },
-    surname: { type: String },
-    email: { type: String, required: true },
-    password: { type: String },
-    role: { type: String, enum: ["host", "guest"], default: "guest" },
-    googleId: { type: String },
-    accommodations: [{ type: Schema.Types.ObjectId, ref: "Accommodation" }],
-  },
-  { timestamps: true }
-);
+const UserSchema = new Schema<IUser>({
+  name: { type: String },
+  surname: { type: String },
+  email: { type: String, required: true },
+  password: { type: String },
+  role: { type: String, enum: ["host", "guest"], default: "guest" },
+  googleId: { type: String },
+  accommodations: [{ type: Schema.Types.ObjectId, ref: "Accommodation" }],
+});
 
-UserSchema.pre("save", async function (next) {
+UserSchema.pre("save", async function (next: () => void) {
   // BEFORE saving the user in db, hash the password
   // I haven't used ARROW FUNCTION here because of "this"
 
@@ -45,7 +50,10 @@ UserSchema.methods.toJSON = function () {
   return userObject;
 };
 
-UserSchema.statics.checkCredentials = async function (email, plainPassword) {
+UserSchema.statics.checkCredentials = async function (
+  email: any,
+  plainPassword: any
+) {
   // Given email and plain password this method should check if email exists in database, then compare plain password with the hashed one
   // 1. Find the user by email
 
@@ -70,4 +78,4 @@ UserSchema.statics.checkCredentials = async function (email, plainPassword) {
 
 //usage --> await UserModel.checkCredentials("john@rambo.com", "1234")
 
-export default model("User", UserSchema);
+export default model<IUser>("User", UserSchema);

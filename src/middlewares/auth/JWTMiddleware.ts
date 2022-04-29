@@ -1,7 +1,8 @@
+import { RequestHandler } from "express";
 import createError from "http-errors";
 import { verifyAccessToken } from "./tools.js";
 
-export const JWTAuthMiddleware = async (req, res, next) => {
+export const JWTAuthMiddleware: RequestHandler = async (req, res, next) => {
   // 1. Check if Authorization header is in the request, if it is not --> 401
   if (!req.headers.authorization) {
     next(
@@ -13,13 +14,13 @@ export const JWTAuthMiddleware = async (req, res, next) => {
       const token = req.headers.authorization.replace("Bearer ", "");
 
       // 3. Verify the token (check if it is not expired and check signature integrity), if everything is fine we should get back the payload ({_id, role})
-      const payload = await verifyAccessToken(token);
+      req.user = (await verifyAccessToken(token)) as JwtUser;
 
       // 4. If token is valid --> next()
-      req.user = {
-        _id: payload._id,
-        role: payload.role,
-      };
+      //   req.user = {
+      //    _id: payload._id,
+      //     role: payload.role,
+      //   };
       next();
     } catch (error) {
       // 5. In case of errors thrown by the jsonwebtoken module --> 401
