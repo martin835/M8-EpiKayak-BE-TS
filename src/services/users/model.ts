@@ -1,5 +1,6 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Document } from "mongoose";
 import bcrypt from "bcrypt";
+import mongoose from "mongoose";
 
 interface IUser {
   name?: string;
@@ -11,7 +12,7 @@ interface IUser {
   accommodations: string[];
 }
 
-const UserSchema = new Schema<IUser>({
+const UserSchema = new Schema<IUser, IUserModel>({
   name: { type: String },
   surname: { type: String },
   email: { type: String, required: true },
@@ -30,7 +31,7 @@ UserSchema.pre("save", async function (next: () => void) {
 
   if (newUser.isModified("password")) {
     // only if the user is modifying his password I will use some CPU cycles to hash that, otherwise it's just a waste of time
-    const hash = await bcrypt.hash(plainPW, 11);
+    const hash = await bcrypt.hash(plainPW!, 11);
     newUser.password = hash;
   }
 
@@ -51,8 +52,8 @@ UserSchema.methods.toJSON = function () {
 };
 
 UserSchema.statics.checkCredentials = async function (
-  email: any,
-  plainPassword: any
+  email: string,
+  plainPassword: string
 ) {
   // Given email and plain password this method should check if email exists in database, then compare plain password with the hashed one
   // 1. Find the user by email
@@ -61,7 +62,7 @@ UserSchema.statics.checkCredentials = async function (
 
   if (user) {
     // 2. If user is found --> compare plainPW with the hashed one
-    const isMatch = await bcrypt.compare(plainPassword, user.password);
+    const isMatch = await bcrypt.compare(plainPassword, user.password!);
 
     if (isMatch) {
       // 3. If they do match --> return a proper response (user himself)
@@ -78,4 +79,11 @@ UserSchema.statics.checkCredentials = async function (
 
 //usage --> await UserModel.checkCredentials("john@rambo.com", "1234")
 
-export default model<IUser>("User", UserSchema);
+interface IUserModel extends mongoose.Model<IUser> {
+  checkCredentials: (
+    email: string,
+    password: string
+  ) => Promise<IUser & Document>;
+}
+
+export default model<IUser, IUserModel>("User", UserSchema);

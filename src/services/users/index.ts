@@ -1,9 +1,9 @@
 import express from "express";
 import createError from "http-errors";
-import UsersModel from "./model.js";
-import AccommodationModel from "../accomodation/model.js";
-import { generateAccessToken } from "../../middlewares/auth/tools.js";
-import { JWTAuthMiddleware } from "../../middlewares/auth/JWTMiddleware.js";
+import UsersModel from "./model";
+import AccommodationModel from "../accomodation/model";
+import { generateAccessToken } from "../../middlewares/auth/tools";
+import { JWTAuthMiddleware } from "../../middlewares/auth/JWTMiddleware";
 
 const usersRouter = express.Router();
 

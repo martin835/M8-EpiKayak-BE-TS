@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import createError from "http-errors";
-import { verifyAccessToken } from "./tools.js";
+import { verifyAccessToken } from "./tools";
 
 export const JWTAuthMiddleware: RequestHandler = async (req, res, next) => {
   // 1. Check if Authorization header is in the request, if it is not --> 401

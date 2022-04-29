@@ -1,8 +1,8 @@
 import express from "express";
 import createError from "http-errors";
-import { hostAuthorization } from "../../middlewares/auth/hostAuthorization.js";
-import { JWTAuthMiddleware } from "../../middlewares/auth/JWTMiddleware.js";
-import AccommodationModel from "./model.js";
+import { hostAuthorization } from "../../middlewares/auth/hostAuthorization";
+import { JWTAuthMiddleware } from "../../middlewares/auth/JWTMiddleware";
+import AccommodationModel from "./model";
 
 const accommodationRouter = express.Router();
 

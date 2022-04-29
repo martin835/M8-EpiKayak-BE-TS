@@ -1,3 +1,5 @@
+process.env.TS_NODE_DEV && require("dotenv").config();
+
 import express from "express";
 import mongoose from "mongoose";
 import listEndpoints from "express-list-endpoints";
@@ -21,6 +23,10 @@ server.use("/users", usersRouter);
 server.use("/accommodation", accommodationRouter);
 
 //***********************************Error handlers****************************************************/
+
+if (!process.env.MONGO_CONNECTION) {
+  throw new Error("No Mongo url");
+}
 
 mongoose.connect(process.env.MONGO_CONNECTION);
 
