@@ -2,8 +2,8 @@ import express from "express";
 import mongoose from "mongoose";
 import listEndpoints from "express-list-endpoints";
 import cors from "cors";
-import usersRouter from "./services/users/index.js";
-import accommodationRouter from "./services/accomodation/index.js";
+import usersRouter from "./services/users";
+import accommodationRouter from "./services/accomodation";
 
 const server = express();
 const port = process.env.port || 3001;
@@ -22,13 +22,13 @@ server.use("/accommodation", accommodationRouter);
 
 //***********************************Error handlers****************************************************/
 
-mongoose.connect(process.env.MONGO_CONNECTION);
+// mongoose.connect(process.env.MONGO_CONNECTION);
 
-mongoose.connection.on("connected", () => {
-  console.log("👌 Connected to Mongo!");
+// mongoose.connection.on("connected", () => {
+//   console.log("👌 Connected to Mongo!");
 
-  server.listen(port, () => {
-    console.table(listEndpoints(server));
-    console.log(`🚀 Server listening on port ${port}`);
-  });
+server.listen(port, () => {
+  console.table(listEndpoints(server));
+  console.log(`🚀 Server listening on port ${port}`);
 });
+// });
